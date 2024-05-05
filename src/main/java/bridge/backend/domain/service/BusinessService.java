@@ -1,19 +1,21 @@
-package bridge.backend.service;
+package bridge.backend.domain.service;
 
-import bridge.backend.entity.Business;
-import bridge.backend.entity.Type;
-import bridge.backend.entity.dto.BusinessRequestDTO;
-import bridge.backend.entity.dto.BusinessResponseDTO;
-import bridge.backend.repository.BusinessRepository;
+import bridge.backend.domain.entity.Business;
+import bridge.backend.domain.entity.Type;
+import bridge.backend.domain.entity.dto.BusinessRequestDTO;
+import bridge.backend.domain.entity.dto.BusinessResponseDTO;
+import bridge.backend.domain.repository.BusinessRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,6 +43,7 @@ public class BusinessService {
         business.setDDay((int)dDay);
         business.setLink(businessDTO.getLink());
         business.setStar(false);
+        business.setCreatedAt(LocalDateTime.now());
 
         businessRepository.save(business);
         return business.getId();
@@ -53,13 +56,12 @@ public class BusinessService {
     }
 
     /*for user*/
-    public List<BusinessResponseDTO> findBusinessByType(List<Integer> idxList){
-
+    public List<BusinessResponseDTO> findBusinessByType(List<Integer> idxList, Pageable pageable){
         List<Type> types = idxList.stream()
                 .map(Type::fromIdx)
                 .collect(Collectors.toList());
 
-        List<Business> businesses = businessRepository.findByTypesContainingAll(types, types.size());
+        Page<Business> businesses = businessRepository.findByTypesContainingAll(types, types.size(), pageable);
 
         return businesses.stream()
                 .map(BusinessResponseDTO::from)
@@ -75,18 +77,36 @@ public class BusinessService {
         });
     }
 
-    public List<BusinessResponseDTO> findBusinessByMonth(YearMonth date){
+    public List<BusinessResponseDTO> findBusinessByMonthAndFilter(YearMonth date, List<Integer> idxList){
         LocalDate startDate = date.atDay(1);
         LocalDate endDate = date.atEndOfMonth();
-        List<Business> businesses = businessRepository.findByDeadlineBetween(startDate, endDate);
+        if(idxList==null){
+            List<Business> businesses = businessRepository.findByDeadlineBetween(startDate, endDate);
+            return businesses.stream()
+                    .map(BusinessResponseDTO::from)
+                    .collect(Collectors.toList());
+        }
+        else{
+            List<Type> types = idxList.stream()
+                    .map(Type::fromIdx)
+                    .collect(Collectors.toList());
+            List<Business> businesses = businessRepository.findByDeadlineBetweenAndTypesContainingAll(startDate, endDate, types, types.size());
+            return businesses.stream()
+                    .map(BusinessResponseDTO::from)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public List<BusinessResponseDTO> findAll(Pageable pageable){
+        Page<Business> businesses = businessRepository.findAll(pageable);
         return businesses.stream()
                 .map(BusinessResponseDTO::from)
                 .collect(Collectors.toList());
     }
 
-    public List<BusinessResponseDTO> findAll(){
-        List<Business> businesses = businessRepository.findAll();
-        return businesses.stream()
+    public List<BusinessResponseDTO> findBusinessByDDayGreaterThanZero(Pageable pageable){
+        Page<Business> business = businessRepository.findByDDayGreaterThanZero(pageable);
+        return business.stream()
                 .map(BusinessResponseDTO::from)
                 .collect(Collectors.toList());
     }

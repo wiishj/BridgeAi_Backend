@@ -1,14 +1,10 @@
-package bridge.backend.entity;
+package bridge.backend.domain.entity;
 
+import bridge.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -19,7 +15,7 @@ import java.util.List;
 @ToString
 @Builder
 @Table(name = "business")
-public class Business {
+public class Business extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

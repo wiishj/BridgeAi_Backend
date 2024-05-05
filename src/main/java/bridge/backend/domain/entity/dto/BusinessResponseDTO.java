@@ -1,12 +1,11 @@
-package bridge.backend.entity.dto;
+package bridge.backend.domain.entity.dto;
 
-import bridge.backend.entity.Business;
-import bridge.backend.entity.Type;
+import bridge.backend.domain.entity.Business;
+import bridge.backend.domain.entity.Type;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 @Getter
 @Setter

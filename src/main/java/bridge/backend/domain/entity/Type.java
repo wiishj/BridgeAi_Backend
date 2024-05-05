@@ -1,4 +1,4 @@
-package bridge.backend.entity;
+package bridge.backend.domain.entity;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
