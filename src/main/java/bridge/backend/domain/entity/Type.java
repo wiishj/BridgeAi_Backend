@@ -1,8 +1,12 @@
 package bridge.backend.domain.entity;
 
+import bridge.backend.global.exception.BadRequestException;
+import bridge.backend.global.exception.ExceptionCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.util.StringUtils;
+
+import static bridge.backend.global.exception.ExceptionCode.NOT_FOUND_TYPE;
 
 @Getter
 @Slf4j
@@ -31,7 +35,7 @@ public enum Type {
                 return type;
             }
         }
-        return null;
+        throw new BadRequestException(NOT_FOUND_TYPE);
     }
 
     public static Type fromIdx(Integer idx){

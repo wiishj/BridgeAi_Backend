@@ -12,12 +12,12 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
 @Table(name = "business")
 public class Business extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="businessId")
     private Long id;
     private String title;
 
@@ -28,5 +28,4 @@ public class Business extends BaseEntity {
     private Integer dDay;
     private String agent;
     private String link;
-    private Boolean star;
 }

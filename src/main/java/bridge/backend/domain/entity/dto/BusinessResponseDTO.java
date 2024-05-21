@@ -13,14 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BusinessResponseDTO {
-    Long id;
-    String title;
-    List<String> types;
-    LocalDate deadline;
-    Integer dDay;
-    String agent;
-    String link;
-    Boolean star;
+    private Long id;
+    private String title;
+    private List<String> types;
+    private LocalDate deadline;
+    private Integer dDay;
+    private String agent;
+    private String link;
 
     public static BusinessResponseDTO from(Business entity){
         List<String> typeTexts = new ArrayList<>();
@@ -35,7 +34,6 @@ public class BusinessResponseDTO {
                 .dDay(entity.getDDay())
                 .agent(entity.getAgent())
                 .link(entity.getLink())
-                .star(entity.getStar())
                 .build();
     }
 }
