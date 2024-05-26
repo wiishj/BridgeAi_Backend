@@ -8,12 +8,13 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class MemberRequestDTO {
+    private String name;
     private String email;
     private LocalDate birth;
     private String phoneNumber;
 
     public Boolean isNull(){
-        if(this.email==null || this.birth==null || this.phoneNumber==null){
+        if(this.name==null || this.name.isEmpty() || this.email==null || this.email.isEmpty() || this.birth==null || this.phoneNumber==null){
             return true;
         }
         return false;

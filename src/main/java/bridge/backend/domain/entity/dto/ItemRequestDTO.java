@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ItemRequestDTO {
+    private String title;
     @Size(max=50000)
     private String input1;
     @Size(max=50000)
@@ -23,7 +24,7 @@ public class ItemRequestDTO {
     private Boolean term3;
 
     public Boolean isNull(){
-        if(this.input1==null || this.input2==null|| this.input3==null || this.input4==null|| this.input5==null || this.term1==null|| this.term2==null|| this.term3==null){
+        if(this.title==null || this.title.isEmpty() || this.input1==null || this.input2==null|| this.input3==null || this.input4==null|| this.input5==null || this.term1==null|| this.term2==null|| this.term3==null){
             return true;
         }
         return false;

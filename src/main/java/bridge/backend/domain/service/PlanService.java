@@ -54,6 +54,7 @@ public class PlanService {
         }
 
         Plan plan = new Plan();
+        plan.setTitle(itemRequestDTO.getTitle());
         plan.setInput1(itemRequestDTO.getInput1());
         plan.setInput2(itemRequestDTO.getInput2());
         plan.setInput3(itemRequestDTO.getInput3());
@@ -86,6 +87,7 @@ public class PlanService {
         }
 
         Plan plan = planRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
+        plan.setTitle(itemRequestDTO.getTitle());
         plan.setInput1(itemRequestDTO.getInput1());
         plan.setInput2(itemRequestDTO.getInput2());
         plan.setInput3(itemRequestDTO.getInput3());

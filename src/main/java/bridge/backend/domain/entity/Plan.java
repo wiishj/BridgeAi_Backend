@@ -20,6 +20,7 @@ public class Plan extends BaseEntity {
     @JoinColumn(name="hostId")
     private Member host;
 
+    private String title;
     @Column(length=50000)
     private String input1;
     @Column(length=50000)

@@ -49,6 +49,7 @@ public class MemberService {
             throw new BadRequestException(INVALID_MEMBER_BIRTH);
         }
         Member member = new Member();
+        member.setName(memberRequestDTO.getName());
         member.setBirth(memberRequestDTO.getBirth());
         member.setEmail(memberRequestDTO.getEmail());
         member.setPhoneNumber(memberRequestDTO.getPhoneNumber());
@@ -79,6 +80,7 @@ public class MemberService {
             throw new BadRequestException(INVALID_MEMBER_BIRTH);
         }
         Member member = findMemberById(id);
+        member.setName(memberRequestDTO.getName());
         member.setBirth(memberRequestDTO.getBirth());
         member.setEmail(memberRequestDTO.getEmail());
         member.setPhoneNumber(memberRequestDTO.getPhoneNumber());
