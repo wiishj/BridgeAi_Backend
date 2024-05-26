@@ -45,7 +45,7 @@ public class PlanController {
         return ResponseEntity.ok(Map.of("size", res.size(), "data", res));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{planId}")
     public ResponseEntity<?> updatePlan(@PathVariable("planId") Long id, @Valid @RequestBody PlanRequestDTO planRequestDTO){
         Long memberId = planService.findPlanById(id).getHostId();
         memberService.updateMember(memberId, planRequestDTO.getMember());
