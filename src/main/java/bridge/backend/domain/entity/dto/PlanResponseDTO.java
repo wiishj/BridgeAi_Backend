@@ -17,6 +17,7 @@ import java.util.List;
 public class PlanResponseDTO {
     private Long id;
     private Long hostId;
+    private String title;
     private String input1;
     private String input2;
     private String input3;
@@ -29,6 +30,7 @@ public class PlanResponseDTO {
         return PlanResponseDTO.builder()
                 .id(entity.getId())
                 .hostId(entity.getHost().getId())
+                .title(entity.getTitle())
                 .input1(entity.getInput1())
                 .input2(entity.getInput2())
                 .input3(entity.getInput3())
