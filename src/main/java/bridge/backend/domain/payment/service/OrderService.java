@@ -32,7 +32,7 @@ public class OrderService {
     }
     @Transactional
     public OrderResponseDTO saveOrderInfo(OrderRequestDTO requestDTO){
-        Item item = itemRepository.findById(requestDTO.getPlanId()).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
+        Item item = itemRepository.findById(requestDTO.getItemId()).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
         Order order = new Order();
         order.setAmount(requestDTO.getAmount());
         order.setMerchantUid(requestDTO.getMerchantUid());
