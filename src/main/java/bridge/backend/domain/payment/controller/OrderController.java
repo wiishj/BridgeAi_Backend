@@ -19,7 +19,6 @@ public class OrderController {
     @PostMapping()
     public ResponseEntity<?> createPlan(@RequestBody OrderRequestDTO orderRequestDTO){
         OrderResponseDTO res = orderService.saveOrderInfo(orderRequestDTO);
-
         return ResponseEntity.ok(res);
     }
 
