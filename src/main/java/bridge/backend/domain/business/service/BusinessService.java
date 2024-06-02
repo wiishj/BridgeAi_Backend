@@ -1,12 +1,11 @@
-package bridge.backend.domain.service;
+package bridge.backend.domain.business.service;
 
-import bridge.backend.domain.entity.Business;
-import bridge.backend.domain.entity.Type;
-import bridge.backend.domain.entity.dto.BusinessRequestDTO;
-import bridge.backend.domain.entity.dto.BusinessResponseDTO;
-import bridge.backend.domain.repository.BusinessRepository;
+import bridge.backend.domain.business.entity.Business;
+import bridge.backend.domain.plan.entity.Type;
+import bridge.backend.domain.business.entity.dto.BusinessRequestDTO;
+import bridge.backend.domain.business.entity.dto.BusinessResponseDTO;
+import bridge.backend.domain.business.repository.BusinessRepository;
 import bridge.backend.global.exception.BadRequestException;
-import bridge.backend.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static bridge.backend.global.exception.ExceptionCode.*;
@@ -36,7 +34,7 @@ public class BusinessService {
        return businessRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_BUSINESS_ID));
     }
     @Transactional
-    public Long saveBusiness(BusinessRequestDTO businessDTO){
+    public BusinessResponseDTO saveBusiness(BusinessRequestDTO businessDTO){
         if(businessDTO.isNull()){
             throw new BadRequestException(INVALID_BUSINESS_REQUEST);
         }
@@ -55,7 +53,7 @@ public class BusinessService {
         business.setCreatedAt(LocalDateTime.now());
 
         businessRepository.save(business);
-        return business.getId();
+        return BusinessResponseDTO.from(business);
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package bridge.backend.domain.entity.dto;
+package bridge.backend.domain.business.entity.dto;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package bridge.backend.domain.entity.dto;
+package bridge.backend.domain.plan.entity.dto;
 
 import lombok.Getter;
 import lombok.Setter;

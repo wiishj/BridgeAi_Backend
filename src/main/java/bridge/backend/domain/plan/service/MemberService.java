@@ -1,24 +1,18 @@
-package bridge.backend.domain.service;
+package bridge.backend.domain.plan.service;
 
-import bridge.backend.domain.entity.Business;
-import bridge.backend.domain.entity.Member;
-import bridge.backend.domain.entity.Type;
-import bridge.backend.domain.entity.dto.BusinessRequestDTO;
-import bridge.backend.domain.entity.dto.MemberRequestDTO;
-import bridge.backend.domain.repository.MemberRepository;
+import bridge.backend.domain.plan.entity.Member;
+import bridge.backend.domain.plan.entity.dto.MemberRequestDTO;
+import bridge.backend.domain.plan.entity.dto.MemberResponseDTO;
+import bridge.backend.domain.plan.repository.MemberRepository;
 import bridge.backend.global.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static bridge.backend.global.exception.ExceptionCode.*;
 
@@ -35,7 +29,7 @@ public class MemberService {
         return memberRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_MEMBER_ID));
     }
     @Transactional
-    public Long saveMember(MemberRequestDTO memberRequestDTO){
+    public MemberResponseDTO saveMember(MemberRequestDTO memberRequestDTO){
         if(memberRequestDTO.isNull()){
             throw new BadRequestException(INVALID_MEMBER_REQUEST);
         }
@@ -55,7 +49,7 @@ public class MemberService {
         member.setPhoneNumber(memberRequestDTO.getPhoneNumber());
 
         memberRepository.save(member);
-        return member.getId();
+        return MemberResponseDTO.from(member);
     }
     private static Boolean isValidBirth(LocalDate birth){
         try{
@@ -84,6 +78,7 @@ public class MemberService {
         member.setBirth(memberRequestDTO.getBirth());
         member.setEmail(memberRequestDTO.getEmail());
         member.setPhoneNumber(memberRequestDTO.getPhoneNumber());
+
     }
 
 }

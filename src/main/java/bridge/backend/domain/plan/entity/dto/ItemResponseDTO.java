@@ -1,22 +1,18 @@
-package bridge.backend.domain.entity.dto;
+package bridge.backend.domain.plan.entity.dto;
 
-import bridge.backend.domain.entity.Business;
-import bridge.backend.domain.entity.Member;
-import bridge.backend.domain.entity.Plan;
-import bridge.backend.domain.entity.Type;
+import bridge.backend.domain.plan.entity.Item;
+import bridge.backend.domain.plan.entity.Member;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanResponseDTO {
-    private Long id;
-    private Long hostId;
+public class ItemResponseDTO {
+    private Long itemId;
     private String title;
     private String input1;
     private String input2;
@@ -24,12 +20,11 @@ public class PlanResponseDTO {
     private String input4;
     private String input5;
     private Boolean term3;
+    private Boolean isPaid;
 
-    public static PlanResponseDTO from(Plan entity){
-
-        return PlanResponseDTO.builder()
-                .id(entity.getId())
-                .hostId(entity.getHost().getId())
+    public static ItemResponseDTO from(Item entity){
+        return ItemResponseDTO.builder()
+                .itemId(entity.getId())
                 .title(entity.getTitle())
                 .input1(entity.getInput1())
                 .input2(entity.getInput2())
@@ -37,6 +32,7 @@ public class PlanResponseDTO {
                 .input4(entity.getInput4())
                 .input5(entity.getInput5())
                 .term3(entity.getTerm3())
+                .isPaid(entity.getIsPaid())
                 .build();
     }
 }

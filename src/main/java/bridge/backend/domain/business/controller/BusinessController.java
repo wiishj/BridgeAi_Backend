@@ -1,10 +1,9 @@
-package bridge.backend.domain.controller;
+package bridge.backend.domain.business.controller;
 
-import bridge.backend.domain.entity.dto.BusinessRequestDTO;
-import bridge.backend.domain.entity.dto.BusinessResponseDTO;
-import bridge.backend.domain.service.BusinessService;
+import bridge.backend.domain.business.entity.dto.BusinessRequestDTO;
+import bridge.backend.domain.business.entity.dto.BusinessResponseDTO;
+import bridge.backend.domain.business.service.BusinessService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,10 +26,8 @@ public class BusinessController {
     /*for admin*/
     @PostMapping()
     public ResponseEntity<?> createBusiness(@RequestBody BusinessRequestDTO req){
-        Long id = businessService.saveBusiness(req);
+        BusinessResponseDTO res = businessService.saveBusiness(req);
 
-        Map<String, Long> res = new HashMap<>();
-        res.put("businessId", id);
         return ResponseEntity.ok(res);
     }
     @PutMapping("/{businessId}")

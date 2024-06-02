@@ -1,4 +1,4 @@
-package bridge.backend.domain.entity;
+package bridge.backend.domain.plan.entity;
 
 import bridge.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -25,5 +25,11 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
     @OneToMany(mappedBy="host")
-    private List<Plan> plans = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
+
+    //==연관관계 메서드==//
+    public void addPlans(Item item){
+        items.add(item);
+        item.setHost(this);
+    }
 }

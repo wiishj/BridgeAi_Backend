@@ -1,5 +1,6 @@
-package bridge.backend.domain.entity;
+package bridge.backend.domain.plan.entity;
 
+import bridge.backend.domain.payment.entity.Order;
 import bridge.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,15 +11,20 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "businessPlan")
-public class Plan extends BaseEntity {
+@Table(name = "item")
+public class Item extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="planId")
+    @Column(name="itemId")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name="hostId")
     private Member host;
+
+    @OneToOne
+    @JoinColumn(name="orderId")
+    private Order order;
+    private Boolean isPaid;
 
     private String title;
     @Column(length=50000)
@@ -36,4 +42,9 @@ public class Plan extends BaseEntity {
     private Boolean term2;
     private Boolean term3;
 
+    //==연관관계 메서드==//
+    public void addOrder(Order savedOrder){
+        order=savedOrder;
+        savedOrder.setItem(this);
+    }
 }

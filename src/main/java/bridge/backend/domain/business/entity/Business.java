@@ -1,5 +1,6 @@
-package bridge.backend.domain.entity;
+package bridge.backend.domain.business.entity;
 
+import bridge.backend.domain.plan.entity.Type;
 import bridge.backend.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

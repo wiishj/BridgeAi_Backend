@@ -1,7 +1,6 @@
-package bridge.backend.domain.entity;
+package bridge.backend.domain.plan.entity;
 
 import bridge.backend.global.exception.BadRequestException;
-import bridge.backend.global.exception.ExceptionCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.util.StringUtils;

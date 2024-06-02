@@ -28,8 +28,9 @@ public enum ExceptionCode {
     INVALID_MEMBER_PHONENUMBER(3002, "휴대폰 번호 형식이 잘못되었습니다."),
     INVALID_MEMBER_EMAIL(3003, "이메일 형식이 잘못되었습니다."),
     INVALID_MEMBER_BIRTH(3004, "생년월일 형식이 잘못되었습니다."),
-    NOT_FOUND_MEMBER_ID(3005, "요청한 ID에 해당하는 사용자가 존재하지 않습니다.");
+    NOT_FOUND_MEMBER_ID(3005, "요청한 ID에 해당하는 사용자가 존재하지 않습니다."),
 
+    NOT_FOUND_ORDER_ID(4001, "요청한 ID에 해당하는 결제내역이 존재하지 않습니다.");
     private final int code;
     private final String message;
 }

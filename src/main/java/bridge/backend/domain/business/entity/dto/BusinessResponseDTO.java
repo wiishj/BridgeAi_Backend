@@ -1,7 +1,7 @@
-package bridge.backend.domain.entity.dto;
+package bridge.backend.domain.business.entity.dto;
 
-import bridge.backend.domain.entity.Business;
-import bridge.backend.domain.entity.Type;
+import bridge.backend.domain.business.entity.Business;
+import bridge.backend.domain.plan.entity.Type;
 import lombok.*;
 
 import java.time.LocalDate;
