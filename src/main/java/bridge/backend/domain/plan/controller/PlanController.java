@@ -1,10 +1,7 @@
 package bridge.backend.domain.plan.controller;
 
 import bridge.backend.domain.plan.entity.Item;
-import bridge.backend.domain.plan.entity.dto.PlanRequestDTO;
-import bridge.backend.domain.plan.entity.dto.ItemResponseDTO;
-import bridge.backend.domain.plan.entity.dto.PlanResponseDTO;
-import bridge.backend.domain.plan.entity.dto.UserResponseDTO;
+import bridge.backend.domain.plan.entity.dto.*;
 import bridge.backend.domain.plan.repository.ItemRepository;
 import bridge.backend.domain.plan.service.UserService;
 import bridge.backend.domain.plan.service.ItemService;
@@ -61,9 +58,9 @@ public class PlanController {
         return new ResponseEntity<>("해당 사계서가 정상적으로 수정되었습니다.", HttpStatus.OK);
     }
 
-    @PostMapping("/isSent/{itemId}")
-    public ResponseEntity<?> updateIsSent(@PathVariable("itemId") Long id){
-        itemService.updateIsSent(id);
+    @PostMapping("/isSent")
+    public ResponseEntity<?> updateIsSent(@RequestBody IdDTO idDTO){
+        itemService.updateIsSent(idDTO.getId());
         return new ResponseEntity<>("해당 사계서가 독스훈트에 전달됨이 정상적으로 표시되었습니다.", HttpStatus.OK);
     }
 
