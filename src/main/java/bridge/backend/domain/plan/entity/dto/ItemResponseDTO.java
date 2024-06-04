@@ -1,7 +1,6 @@
 package bridge.backend.domain.plan.entity.dto;
 
 import bridge.backend.domain.plan.entity.Item;
-import bridge.backend.domain.plan.entity.Member;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,6 +20,7 @@ public class ItemResponseDTO {
     private String input5;
     private Boolean term3;
     private Boolean isPaid;
+    private Boolean isSent;
 
     public static ItemResponseDTO from(Item entity){
         return ItemResponseDTO.builder()
@@ -33,6 +33,7 @@ public class ItemResponseDTO {
                 .input5(entity.getInput5())
                 .term3(entity.getTerm3())
                 .isPaid(entity.getIsPaid())
+                .isSent(entity.getIsSent())
                 .build();
     }
 }

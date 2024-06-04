@@ -1,11 +1,11 @@
 package bridge.backend.domain.plan.service;
 
 import bridge.backend.domain.plan.entity.Item;
-import bridge.backend.domain.plan.entity.Member;
+import bridge.backend.domain.plan.entity.User;
 import bridge.backend.domain.plan.entity.dto.ItemRequestDTO;
 import bridge.backend.domain.plan.entity.dto.ItemResponseDTO;
-import bridge.backend.domain.plan.entity.dto.MemberResponseDTO;
 import bridge.backend.domain.plan.entity.dto.PlanResponseDTO;
+import bridge.backend.domain.plan.entity.dto.UserResponseDTO;
 import bridge.backend.domain.plan.repository.ItemRepository;
 import bridge.backend.global.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,11 @@ import static bridge.backend.global.exception.ExceptionCode.*;
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final MemberService memberService;
 
     public PlanResponseDTO findPlanById(Long id){
         Item item = itemRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
-        Member member = item.getHost();
-        return new PlanResponseDTO(MemberResponseDTO.from(member), ItemResponseDTO.from(item));
+        User user = item.getHost();
+        return new PlanResponseDTO(UserResponseDTO.from(user), ItemResponseDTO.from(item));
     }
 
     public List<PlanResponseDTO> findAll(Pageable pageable){
@@ -39,13 +38,13 @@ public class ItemService {
         }
         return items.stream()
                 .map(item -> {
-                    Member member = item.getHost();
-                    return new PlanResponseDTO(MemberResponseDTO.from(member), ItemResponseDTO.from(item));
+                    User user = item.getHost();
+                    return new PlanResponseDTO(UserResponseDTO.from(user), ItemResponseDTO.from(item));
                 })
                 .collect(Collectors.toList());
     }
     @Transactional
-    public ItemResponseDTO savePlan(ItemRequestDTO itemRequestDTO, Member member){
+    public ItemResponseDTO savePlan(ItemRequestDTO itemRequestDTO, User user){
         if(itemRequestDTO.isNull()){
             throw new BadRequestException(INVALID_PLAN_REQUEST);
         }
@@ -72,14 +71,15 @@ public class ItemService {
         item.setTerm3(itemRequestDTO.getTerm3());
 
         item.setIsPaid(false);
+        item.setIsSent(false);
         item.setOrder(null);
-        member.addPlans(item);
+        user.addPlans(item);
         itemRepository.save(item);
         return ItemResponseDTO.from(item);
     }
 
     @Transactional
-    public void updatePlan(Long id, ItemRequestDTO itemRequestDTO, Member member){
+    public void updatePlan(Long id, ItemRequestDTO itemRequestDTO, User user){
         if(itemRequestDTO.isNull()){
             throw new BadRequestException(INVALID_PLAN_REQUEST);
         }
@@ -104,7 +104,13 @@ public class ItemService {
         item.setTerm1(itemRequestDTO.getTerm1());
         item.setTerm2(itemRequestDTO.getTerm2());
         item.setTerm3(itemRequestDTO.getTerm3());
-        member.addPlans(item);
+        user.addPlans(item);
+    }
+
+    @Transactional
+    public void updateIsSent(Long id){
+        Item item = itemRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
+        item.setIsSent(true);
     }
 
 }

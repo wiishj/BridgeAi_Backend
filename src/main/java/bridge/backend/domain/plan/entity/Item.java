@@ -19,7 +19,7 @@ public class Item extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="hostId")
-    private Member host;
+    private User host;
 
     @OneToOne
     @JoinColumn(name="orderId")
@@ -42,6 +42,7 @@ public class Item extends BaseEntity {
     private Boolean term2;
     private Boolean term3;
 
+    private Boolean isSent;
     //==연관관계 메서드==//
     public void addOrder(Order savedOrder){
         order=savedOrder;

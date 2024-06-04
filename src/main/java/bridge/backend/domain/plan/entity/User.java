@@ -14,10 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "member")
-public class Member extends BaseEntity {
+@Table(name = "user")
+public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="memberId")
+    @Column(name="userId")
     private Long id;
     private String name;
     private String email;
