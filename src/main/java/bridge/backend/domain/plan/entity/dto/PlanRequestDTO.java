@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PlanRequestDTO {
-    private MemberRequestDTO member;
+    private UserRequestDTO user;
     private ItemRequestDTO item;
 }

@@ -6,11 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PlanResponseDTO {
-    MemberResponseDTO member;
+    UserResponseDTO user;
     ItemResponseDTO item;
 
-    public PlanResponseDTO(MemberResponseDTO member, ItemResponseDTO item){
-        this.member = member;
+    public PlanResponseDTO(UserResponseDTO user, ItemResponseDTO item){
+        this.user = user;
         this.item = item;
     }
 }

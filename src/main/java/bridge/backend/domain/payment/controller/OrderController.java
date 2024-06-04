@@ -4,7 +4,7 @@ import bridge.backend.domain.payment.entity.dto.OrderRequestDTO;
 import bridge.backend.domain.payment.entity.dto.OrderResponseDTO;
 import bridge.backend.domain.payment.service.OrderService;
 import bridge.backend.domain.plan.service.ItemService;
-import bridge.backend.domain.plan.service.MemberService;
+import bridge.backend.domain.plan.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService orderService;
-    private final MemberService memberService;
-    private final ItemService itemService;
+
     @PostMapping()
     public ResponseEntity<?> createPlan(@RequestBody OrderRequestDTO orderRequestDTO){
         OrderResponseDTO res = orderService.saveOrderInfo(orderRequestDTO);

@@ -3,7 +3,7 @@ package bridge.backend.domain.payment.entity.dto;
 import bridge.backend.domain.payment.entity.Order;
 import bridge.backend.domain.plan.entity.Item;
 import bridge.backend.domain.plan.entity.dto.ItemResponseDTO;
-import bridge.backend.domain.plan.entity.dto.MemberResponseDTO;
+import bridge.backend.domain.plan.entity.dto.UserResponseDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDTO {
-    MemberResponseDTO member;
+    UserResponseDTO user;
     ItemResponseDTO item;
 
     Long orderId;
@@ -22,9 +22,9 @@ public class OrderResponseDTO {
     String payMethod;
     BigDecimal amount;
 
-    public static OrderResponseDTO from(MemberResponseDTO memberRes, ItemResponseDTO itemRes, Order entity){
+    public static OrderResponseDTO from(UserResponseDTO userRes, ItemResponseDTO itemRes, Order entity){
         return OrderResponseDTO.builder()
-                .member(memberRes)
+                .user(userRes)
                 .item(itemRes)
                 .orderId(entity.getId())
                 .merchantUid(entity.getMerchantUid())

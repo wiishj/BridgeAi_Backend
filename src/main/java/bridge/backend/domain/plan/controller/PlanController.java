@@ -1,16 +1,17 @@
 package bridge.backend.domain.plan.controller;
 
 import bridge.backend.domain.plan.entity.Item;
-import bridge.backend.domain.plan.entity.dto.MemberResponseDTO;
 import bridge.backend.domain.plan.entity.dto.PlanRequestDTO;
 import bridge.backend.domain.plan.entity.dto.ItemResponseDTO;
 import bridge.backend.domain.plan.entity.dto.PlanResponseDTO;
+import bridge.backend.domain.plan.entity.dto.UserResponseDTO;
 import bridge.backend.domain.plan.repository.ItemRepository;
-import bridge.backend.domain.plan.service.MemberService;
+import bridge.backend.domain.plan.service.UserService;
 import bridge.backend.domain.plan.service.ItemService;
 import bridge.backend.global.exception.BadRequestException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,13 @@ import static bridge.backend.global.exception.ExceptionCode.NOT_FOUND_PLAN_ID;
 public class PlanController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
-    private final MemberService memberService;
+    private final UserService userService;
     @PostMapping()
     public ResponseEntity<?> createPlan(@Valid @RequestBody PlanRequestDTO planRequestDTO){
-        MemberResponseDTO memberRes = memberService.saveMember(planRequestDTO.getMember());
-        ItemResponseDTO itemRes = itemService.savePlan(planRequestDTO.getItem(), memberService.findMemberById(memberRes.getMemberId()));
+        UserResponseDTO userRes = userService.saveMember(planRequestDTO.getUser());
+        ItemResponseDTO itemRes = itemService.savePlan(planRequestDTO.getItem(), userService.findMemberById(userRes.getUserId()));
 
-        PlanResponseDTO res = new PlanResponseDTO(memberRes, itemRes);
+        PlanResponseDTO res = new PlanResponseDTO(userRes, itemRes);
         return ResponseEntity.ok(res);
     }
 
@@ -55,9 +56,15 @@ public class PlanController {
     public ResponseEntity<?> updatePlan(@PathVariable("itemId") Long id, @Valid @RequestBody PlanRequestDTO planRequestDTO){
         Item item = itemRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
         Long memberId = item.getHost().getId();
-        memberService.updateMember(memberId, planRequestDTO.getMember());
-        itemService.updatePlan(id, planRequestDTO.getItem(), memberService.findMemberById(memberId));
+        userService.updateMember(memberId, planRequestDTO.getUser());
+        itemService.updatePlan(id, planRequestDTO.getItem(), userService.findMemberById(memberId));
         return new ResponseEntity<>("해당 사계서가 정상적으로 수정되었습니다.", HttpStatus.OK);
+    }
+
+    @PostMapping("/isSent/{itemId}")
+    public ResponseEntity<?> updateIsSent(@PathVariable("itemId") Long id){
+        itemService.updateIsSent(id);
+        return new ResponseEntity<>("해당 사계서가 독스훈트에 전달됨이 정상적으로 표시되었습니다.", HttpStatus.OK);
     }
 
 }
