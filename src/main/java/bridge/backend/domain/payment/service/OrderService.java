@@ -37,6 +37,7 @@ public class OrderService {
         order.setAmount(requestDTO.getAmount());
         order.setMerchantUid(requestDTO.getMerchantUid());
         order.setPayMethod(requestDTO.getPayMethod());
+        orderRepository.save(order);
         item.addOrder(order);
         item.setIsPaid(true);
 
