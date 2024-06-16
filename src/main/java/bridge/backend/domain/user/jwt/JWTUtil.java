@@ -1,0 +1,100 @@
+package bridge.backend.domain.user.jwt;
+
+import bridge.backend.domain.user.entity.Member;
+import bridge.backend.domain.user.repository.MemberRepository;
+import bridge.backend.domain.user.security.CustomOAuth2User;
+import bridge.backend.domain.user.security.CustomOAuth2UserService;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+@Component
+@Slf4j
+public class JWTUtil {
+    private SecretKey secretKey;
+    private MemberRepository memberRepository;
+    public JWTUtil(@Value("${jwt.secret}")String secret){
+        byte[] byteSecretKey = Decoders.BASE64.decode(secret);
+        secretKey= Keys.hmacShaKeyFor(byteSecretKey);
+    }
+    public String getSubject(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+    public String getCategory(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("category", String.class);
+    }
+    public String getRole(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+    }
+    public Authentication getAuthentication(String token) {
+        String username = getSubject(token);
+        Member member = memberRepository.findByUsername(username).orElseThrow();//에러처리
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(member);
+        return new UsernamePasswordAuthenticationToken(customOAuth2User, "", customOAuth2User.getAuthorities());
+    }
+    public String createJwt(String category, String role, String subject, Long expiredMs) {
+
+        return Jwts.builder()
+                .claim("category", category)
+                .claim("role", role)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+    public boolean validate(String token){
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secretKey)  //검증키 지정
+                    .build()
+                    .parseClaimsJws(token); //토큰의 유효 기간을 확인하기 위해 exp claim을 가져와 현재와 비교
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            log.warn("Wrong JWT sign");
+        } catch (ExpiredJwtException e) {
+            log.warn("Expired JWT");
+        } catch (UnsupportedJwtException e) {
+            log.warn("Unsupported JWT");
+        } catch (IllegalArgumentException e) {
+            log.warn("Wrong JWT");
+        }
+        return false;
+    }
+    public String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
