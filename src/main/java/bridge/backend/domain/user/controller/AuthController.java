@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-    private final CustomOAuth2UserService authService;
     private final MemberService memberService;
 
 //    @PostMapping("/join")
@@ -42,7 +41,7 @@ public class AuthController {
         if(refreshToken==null){
             //에러처리
         }
-        TokenDTO tokens = authService.reissue(refreshToken);
+        TokenDTO tokens = memberService.reissue(refreshToken);
         response.setHeader("Authorization", tokens.getAccessToken());
         response.addCookie(createCookie("refresh", tokens.getRefreshToken()));
         return new ResponseEntity<>(HttpStatus.OK);

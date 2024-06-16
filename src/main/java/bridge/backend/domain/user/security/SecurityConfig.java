@@ -63,7 +63,7 @@ public class SecurityConfig {
                                 userInfoEndpointConfig.userService((customOAuth2UserService)))
                                 .successHandler(oAuth2SuccessHandler))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
+//                        .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
                         .requestMatchers("/api/plan/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session

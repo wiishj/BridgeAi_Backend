@@ -61,8 +61,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         memberRepository.save(member);
         return member;
     }
-
-    public TokenDTO reissue(String refreshToken){
-        return jwtProvider.reissue(refreshToken);
-    }
 }

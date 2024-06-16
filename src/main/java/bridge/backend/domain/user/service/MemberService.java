@@ -3,6 +3,8 @@ package bridge.backend.domain.user.service;
 import bridge.backend.domain.user.entity.Member;
 import bridge.backend.domain.user.entity.Role;
 import bridge.backend.domain.user.entity.dto.LoginRequestDTO;
+import bridge.backend.domain.user.entity.dto.TokenDTO;
+import bridge.backend.domain.user.jwt.JwtProvider;
 import bridge.backend.domain.user.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Transactional
     public void join(LoginRequestDTO requestDTO){
@@ -23,4 +26,9 @@ public class MemberService {
         member.setRole(Role.ROLE_ADMIN);
         memberRepository.save(member);
     }
+    @Transactional
+    public TokenDTO reissue(String refreshToken){
+        return jwtProvider.reissue(refreshToken);
+    }
+
 }
