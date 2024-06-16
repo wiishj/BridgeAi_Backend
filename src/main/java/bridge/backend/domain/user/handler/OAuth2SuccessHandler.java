@@ -1,6 +1,8 @@
 package bridge.backend.domain.user.handler;
 
+import bridge.backend.domain.user.entity.dto.TokenDTO;
 import bridge.backend.domain.user.jwt.JWTUtil;
+import bridge.backend.domain.user.jwt.JwtProvider;
 import bridge.backend.domain.user.security.CustomOAuth2User;
 import bridge.backend.global.redis.RedisService;
 import jakarta.servlet.ServletException;
@@ -24,10 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final JWTUtil jwtUtil;
-    private final RedisService redisService;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private final JwtProvider jwtProvider;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -41,12 +40,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String accessToken = jwtUtil.createJwt("access", role, username, ACCESS_TOKEN_EXPIRE_TIME);
-        String refreshToken = jwtUtil.createJwt("refresh", role, username, REFRESH_TOKEN_EXPIRE_TIME);
-        redisService.setValues(username, refreshToken, REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
-
-        response.setHeader("Authorization", "Bearer "+accessToken);
-        response.addCookie(createCookie("refresh", refreshToken));
+        TokenDTO tokens = jwtProvider.createJWT(role, username);
+        response.setHeader("Authorization", "Bearer "+tokens.getAccessToken());
+        response.addCookie(createCookie("refresh", tokens.getRefreshToken()));
     }
     private Cookie createCookie(String key, String value) {
 

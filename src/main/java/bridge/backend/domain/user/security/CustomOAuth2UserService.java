@@ -2,13 +2,18 @@ package bridge.backend.domain.user.security;
 
 import bridge.backend.domain.user.entity.Member;
 import bridge.backend.domain.user.entity.Role;
+import bridge.backend.domain.user.entity.dto.TokenDTO;
 import bridge.backend.domain.user.infra.SocialType;
 import bridge.backend.domain.user.infra.google.GoogleResponse;
 import bridge.backend.domain.user.infra.kakao.KakaoResponse;
 import bridge.backend.domain.user.infra.naver.NaverResponse;
 import bridge.backend.domain.user.infra.OAuth2Response;
+import bridge.backend.domain.user.jwt.JWTUtil;
+import bridge.backend.domain.user.jwt.JwtProvider;
 import bridge.backend.domain.user.repository.MemberRepository;
+import bridge.backend.global.redis.RedisService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -18,6 +23,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final MemberRepository memberRepository;
+    private final JwtProvider jwtProvider;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest){
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -46,13 +52,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private Member findOrCreateMember(String username, SocialType socialType){
         return memberRepository.findByUsername(username).orElseGet(()->createMember(username, socialType));
     }
-    private Member createMember(String userame, SocialType socialType){
+    private Member createMember(String username, SocialType socialType){
         Member member = Member.builder()
-                .username(userame)
+                .username(username)
                 .role(Role.ROLE_USER)
                 .socialType(socialType)
                 .build();
         memberRepository.save(member);
         return member;
+    }
+
+    public TokenDTO reissue(String refreshToken){
+        return jwtProvider.reissue(refreshToken);
     }
 }

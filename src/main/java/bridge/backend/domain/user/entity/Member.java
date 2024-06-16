@@ -16,7 +16,10 @@ public class Member {
     @Column(name="memberId")
     private Long id;
     private String username;
+    private String password;
     private String nickname;
+    @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
     private SocialType socialType;
 }

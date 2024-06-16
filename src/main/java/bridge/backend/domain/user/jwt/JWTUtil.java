@@ -12,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +23,12 @@ import java.util.List;
 @Component
 @Slf4j
 public class JWTUtil {
-    private SecretKey secretKey;
-    private MemberRepository memberRepository;
-    public JWTUtil(@Value("${jwt.secret}")String secret){
+    private final Key secretKey;
+    private final MemberRepository memberRepository;
+    public JWTUtil(MemberRepository memberRepository, @Value("${jwt.secret}")String secret){
         byte[] byteSecretKey = Decoders.BASE64.decode(secret);
-        secretKey= Keys.hmacShaKeyFor(byteSecretKey);
+        secretKey = Keys.hmacShaKeyFor(byteSecretKey);
+        this.memberRepository = memberRepository;
     }
     public String getSubject(String token){
         return Jwts.parserBuilder()
@@ -39,14 +38,6 @@ public class JWTUtil {
                 .getBody()
                 .getSubject();
     }
-    public String getCategory(String token){
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("category", String.class);
-    }
     public String getRole(String token){
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -54,6 +45,14 @@ public class JWTUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("role", String.class);
+    }
+    public String getCategory(String token){
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("category", String.class);
     }
     public Authentication getAuthentication(String token) {
         String username = getSubject(token);
