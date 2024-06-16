@@ -58,14 +58,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .oauth2Login((oauth2)->
-                        oauth2.userInfoEndpoint((userInfoEndpointConfig)->
-                                userInfoEndpointConfig.userService((customOAuth2UserService)))
-                                .successHandler(oAuth2SuccessHandler))
+//                .oauth2Login((oauth2)->
+//                        oauth2.userInfoEndpoint((userInfoEndpointConfig)->
+//                                userInfoEndpointConfig.userService((customOAuth2UserService)))
+//                                .successHandler(oAuth2SuccessHandler))
                 .authorizeHttpRequests((auth) -> auth
 //                        .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
                         .requestMatchers("/api/plan/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+//                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtProvider), UsernamePasswordAuthenticationFilter.class)
