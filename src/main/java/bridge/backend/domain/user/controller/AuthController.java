@@ -8,6 +8,8 @@ import bridge.backend.domain.user.entity.dto.LoginRequestDTO;
 import bridge.backend.domain.user.entity.dto.TokenDTO;
 import bridge.backend.domain.user.security.CustomOAuth2UserService;
 import bridge.backend.domain.user.service.MemberService;
+import bridge.backend.global.exception.BadRequestException;
+import bridge.backend.global.exception.ExceptionCode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static bridge.backend.global.exception.ExceptionCode.IS_NOT_REFRESHTOKEN;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +43,7 @@ public class AuthController {
             }
         }
         if(refreshToken==null){
-            //에러처리
+            throw new BadRequestException(IS_NOT_REFRESHTOKEN);
         }
         TokenDTO tokens = memberService.reissue(refreshToken);
         response.setHeader("Authorization", tokens.getAccessToken());
