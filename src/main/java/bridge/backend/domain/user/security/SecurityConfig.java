@@ -64,7 +64,7 @@ public class SecurityConfig {
 //                                .successHandler(oAuth2SuccessHandler))
                 .authorizeHttpRequests((auth) -> auth
 //                        .requestMatchers("/", "/join", "/login", "/reissue").permitAll()
-                        .requestMatchers("/api/plan/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/plan/**").hasRole("ADMIN")
 //                        .anyRequest().authenticated())
                         .anyRequest().permitAll())
                 .sessionManagement((session) -> session

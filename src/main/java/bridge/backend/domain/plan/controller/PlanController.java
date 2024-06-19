@@ -21,12 +21,11 @@ import static bridge.backend.global.exception.ExceptionCode.NOT_FOUND_PLAN_ID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/plan")
 public class PlanController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
     private final UserService userService;
-    @PostMapping()
+    @PostMapping("/api/plan")
     public ResponseEntity<?> createPlan(@Valid @RequestBody PlanRequestDTO planRequestDTO){
         UserResponseDTO userRes = userService.saveMember(planRequestDTO.getUser());
         ItemResponseDTO itemRes = itemService.savePlan(planRequestDTO.getItem(), userService.findMemberById(userRes.getUserId()));
@@ -36,20 +35,20 @@ public class PlanController {
     }
 
     /*for admin*/
-    @GetMapping("/{itemId}")
+    @GetMapping("/admin/plan/{itemId}")
     public ResponseEntity<?> getPlanById(@PathVariable("itemId")Long id){
         PlanResponseDTO res  = itemService.findPlanById(id);
         return ResponseEntity.ok(res);
     }
 
-    @GetMapping()
+    @GetMapping("/admin/plan")
     public ResponseEntity<?> getAllPlans(@RequestParam(name="page", required=false, defaultValue = "0")int page){
         PageRequest pageable = PageRequest.of(page, 10);
         List<PlanResponseDTO> res = itemService.findAll(pageable);
         return ResponseEntity.ok(Map.of("size", res.size(), "data", res));
     }
 
-    @PutMapping("/{itemId}")
+    @PutMapping("/adimin/plan/{itemId}")
     public ResponseEntity<?> updatePlan(@PathVariable("itemId") Long id, @Valid @RequestBody PlanRequestDTO planRequestDTO){
         Item item = itemRepository.findById(id).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
         Long memberId = item.getHost().getId();
@@ -58,7 +57,7 @@ public class PlanController {
         return new ResponseEntity<>("해당 사계서가 정상적으로 수정되었습니다.", HttpStatus.OK);
     }
 
-    @PostMapping("/isSent")
+    @PostMapping("/admin/plan/isSent")
     public ResponseEntity<?> updateIsSent(@RequestBody IdDTO idDTO){
         itemService.updateIsSent(idDTO.getId());
         return new ResponseEntity<>("해당 사계서가 독스훈트에 전달됨이 정상적으로 표시되었습니다.", HttpStatus.OK);

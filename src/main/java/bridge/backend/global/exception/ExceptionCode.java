@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ExceptionCode {
+    IS_NOT_REFRESHTOKEN(0001, "리프레시 토큰이 아닙니다."),
+
     INVALID_REQUEST(1000, "올바르지 않은 요청입니다."),
 
     NOT_FOUND_BUSINESS_ID(1001, "요청한 ID에 해당하는 사업 목록이 존재하지 않습니다."),
