@@ -1,26 +1,16 @@
 package bridge.backend.domain.user.controller;
 
-import bridge.backend.domain.plan.entity.dto.ItemResponseDTO;
-import bridge.backend.domain.plan.entity.dto.PlanRequestDTO;
-import bridge.backend.domain.plan.entity.dto.PlanResponseDTO;
-import bridge.backend.domain.plan.entity.dto.UserResponseDTO;
-import bridge.backend.domain.user.entity.dto.LoginRequestDTO;
 import bridge.backend.domain.user.entity.dto.TokenDTO;
-import bridge.backend.domain.user.security.CustomOAuth2UserService;
 import bridge.backend.domain.user.service.MemberService;
 import bridge.backend.global.exception.BadRequestException;
-import bridge.backend.global.exception.ExceptionCode;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import static bridge.backend.global.exception.ExceptionCode.IS_NOT_REFRESHTOKEN;
 
 @RestController

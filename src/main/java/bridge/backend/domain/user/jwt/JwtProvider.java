@@ -26,7 +26,6 @@ public class JwtProvider {
         String accessToken = jwtUtil.createJwt("access", role, username, ACCESS_TOKEN_EXPIRE_TIME);
         String refreshToken = jwtUtil.createJwt("refresh", role, username, REFRESH_TOKEN_EXPIRE_TIME);
         redisService.setValues(username, refreshToken, REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
-        log.info("new refreshToken : "+refreshToken);
         return TokenDTO.of(accessToken, refreshToken);
     }
 
@@ -37,7 +36,6 @@ public class JwtProvider {
         }
         String subject = jwtUtil.getSubject(refreshToken);
         String valueToken = redisService.getValues(subject);
-        log.info("original refreshToken : "+valueToken);
         if(valueToken==null || !valueToken.equals(refreshToken) || !jwtUtil.getCategory(valueToken).equals("refresh")){
             throw new BadRequestException(IS_NOT_REFRESHTOKEN);
         }
