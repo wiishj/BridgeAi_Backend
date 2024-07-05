@@ -19,7 +19,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class BusinessCustomRepositoryImpl implements BusinessCustomRepository {
-    private JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory;
 
 
     @Override
