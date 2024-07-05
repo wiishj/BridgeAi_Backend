@@ -26,7 +26,6 @@ public class Business extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private List<Type> types;
     private LocalDate deadline;
-    private Integer dDay;
     private String agent;
     private String link;
 }

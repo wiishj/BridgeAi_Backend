@@ -33,11 +33,13 @@ public class OrderService {
     @Transactional
     public OrderResponseDTO saveOrderInfo(OrderRequestDTO requestDTO){
         Item item = itemRepository.findById(requestDTO.getItemId()).orElseThrow(()->new BadRequestException(NOT_FOUND_PLAN_ID));
-        Order order = new Order();
-        order.setAmount(requestDTO.getAmount());
-        order.setMerchantUid(requestDTO.getMerchantUid());
-        order.setPayMethod(requestDTO.getPayMethod());
+        Order order = Order.builder()
+                .amount(requestDTO.getAmount())
+                .merchantUid(requestDTO.getMerchantUid())
+                .payMethod(requestDTO.getPayMethod())
+                .build();
         orderRepository.save(order);
+
         item.addOrder(order);
         item.setIsPaid(true);
 

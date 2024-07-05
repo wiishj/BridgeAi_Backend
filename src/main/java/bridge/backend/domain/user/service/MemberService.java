@@ -20,10 +20,11 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Transactional
     public void join(LoginRequestDTO requestDTO){
-        Member member = new Member();
-        member.setUsername(requestDTO.getUsername());
-        member.setPassword(bCryptPasswordEncoder.encode(requestDTO.getPassword()));
-        member.setRole(Role.ROLE_ADMIN);
+        Member member = Member.builder()
+                .username(requestDTO.getUsername())
+                .password(requestDTO.getPassword())
+                .role(Role.ROLE_ADMIN)
+                .build();
         memberRepository.save(member);
     }
     @Transactional

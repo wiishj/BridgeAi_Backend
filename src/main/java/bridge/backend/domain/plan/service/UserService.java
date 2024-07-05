@@ -42,12 +42,12 @@ public class UserService {
         if(!isValidBirth(userRequestDTO.getBirth())){
             throw new BadRequestException(INVALID_MEMBER_BIRTH);
         }
-        User user = new User();
-        user.setName(userRequestDTO.getName());
-        user.setBirth(userRequestDTO.getBirth());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPhoneNumber(userRequestDTO.getPhoneNumber());
-
+        User user = User.builder()
+                .name(userRequestDTO.getName())
+                .birth(userRequestDTO.getBirth())
+                .email(userRequestDTO.getEmail())
+                .phoneNumber(userRequestDTO.getPhoneNumber())
+                .build();
         userRepository.save(user);
         return UserResponseDTO.from(user);
     }

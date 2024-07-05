@@ -14,23 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BusinessRepository extends JpaRepository<Business, Long> {
-    Page<Business> findAll(Pageable pageable);
-    Optional<Business> findById(Long id);
+public interface BusinessRepository extends JpaRepository<Business, Long>, BusinessCustomRepository {
 
-    /*for calendar*/
-    List<Business> findByDeadlineBetween(LocalDate startDate, LocalDate endDate);
-    @Query("SELECT DISTINCT b FROM Business b JOIN b.types t WHERE b.deadline BETWEEN :startDate AND :endDate AND t IN :types GROUP BY b HAVING COUNT(DISTINCT t) = :typeCount")
-    List<Business> findByDeadlineBetweenAndTypesContainingAll(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate,
-            @Param("types") List<Type> types,
-            @Param("typeCount") long typeCount);
-
-    /*for sorting*/
-    @Query("SELECT DISTINCT b FROM Business b JOIN b.types t WHERE t IN :types AND b.dDay >=0 GROUP BY b HAVING COUNT(DISTINCT t) = :typeCount")
-    Page<Business> findByTypesContainingAll(@Param("types") List<Type> types, @Param("typeCount") long typeCount, Pageable pageable);
-
-    @Query("SELECT b FROM Business b WHERE b.dDay >= 0")
-    Page<Business> findByDDayGreaterThanZero(Pageable pageable);
 }

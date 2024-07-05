@@ -58,21 +58,20 @@ public class ItemService {
             throw new BadRequestException(INVALID_ITEM2_SIZE);
         }
 
-        Item item = new Item();
-        item.setTitle(itemRequestDTO.getTitle());
-        item.setInput1(itemRequestDTO.getInput1());
-        item.setInput2(itemRequestDTO.getInput2());
-        item.setInput3(itemRequestDTO.getInput3());
-        item.setInput4(itemRequestDTO.getInput4());
-        item.setInput5(itemRequestDTO.getInput5());
-
-        item.setTerm1(itemRequestDTO.getTerm1());
-        item.setTerm2(itemRequestDTO.getTerm2());
-        item.setTerm3(itemRequestDTO.getTerm3());
-
-        item.setIsPaid(false);
-        item.setIsSent(false);
-        item.setOrder(null);
+        Item item = Item.builder()
+                .title(itemRequestDTO.getTitle())
+                .input1(itemRequestDTO.getInput1())
+                .input2(itemRequestDTO.getInput2())
+                .input3(itemRequestDTO.getInput3())
+                .input4(itemRequestDTO.getInput4())
+                .input5(itemRequestDTO.getInput5())
+                .term1(itemRequestDTO.getTerm1())
+                .term2(itemRequestDTO.getTerm2())
+                .term3(itemRequestDTO.getTerm3())
+                .isPaid(false)
+                .isSent(false)
+                .order(null)
+                .build();
         user.addPlans(item);
         itemRepository.save(item);
         return ItemResponseDTO.from(item);

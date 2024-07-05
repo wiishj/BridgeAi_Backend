@@ -44,10 +44,10 @@ public class PrePaymentService {
         PrepareData prepareData = new PrepareData(request.getMerchantUid(), request.getAmount());
         api.postPrepare(prepareData);
 
-        PrePayment entity = new PrePayment();
-        entity.setAmount(request.getAmount());
-        entity.setMerchantUid(request.getMerchantUid());
-
+        PrePayment entity = PrePayment.builder()
+                .amount(request.getAmount())
+                .merchantUid(request.getMerchantUid())
+                .build();
         paymentRepository.save(entity);
     }
 

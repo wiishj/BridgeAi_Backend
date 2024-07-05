@@ -8,6 +8,7 @@ import bridge.backend.domain.business.repository.BusinessRepository;
 import bridge.backend.global.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,16 +42,14 @@ public class BusinessService {
         List<Type> types = businessDTO.getTypes().stream()
                 .map(Type::fromText)
                 .collect(Collectors.toList());
-        long dDay = ChronoUnit.DAYS.between(LocalDate.now(),businessDTO.getDeadline());
 
-        Business business = new Business();
-        business.setTitle(businessDTO.getTitle());
-        business.setTypes(types);
-        business.setDeadline(businessDTO.getDeadline());
-        business.setAgent(businessDTO.getAgent());
-        business.setDDay((int)dDay);
-        business.setLink(businessDTO.getLink());
-        business.setCreatedAt(LocalDateTime.now());
+        Business business = Business.builder()
+                .title(businessDTO.getTitle())
+                .types(types)
+                .deadline(businessDTO.getDeadline())
+                .agent(businessDTO.getAgent())
+                .link(businessDTO.getLink())
+                .build();
 
         businessRepository.save(business);
         return BusinessResponseDTO.from(business);
@@ -70,7 +69,6 @@ public class BusinessService {
         List<Type> types = businessDTO.getTypes().stream()
                 .map(Type::fromText)
                 .collect(Collectors.toList());
-        long dDay = ChronoUnit.DAYS.between(LocalDate.now(),businessDTO.getDeadline());
 
         Business business = findBusinessById(id);
 
@@ -78,7 +76,6 @@ public class BusinessService {
         business.setTypes(types);
         business.setDeadline(businessDTO.getDeadline());
         business.setAgent(businessDTO.getAgent());
-        business.setDDay((int)dDay);
         business.setLink(businessDTO.getLink());
     }
 
@@ -92,7 +89,7 @@ public class BusinessService {
         List<Type> types = idxList.stream()
                 .map(Type::fromIdx)
                 .collect(Collectors.toList());
-        Page<Business> businesses = businessRepository.findByTypesContainingAll(types, types.size(), pageable);
+        Page<Business> businesses = businessRepository.findByTypesContainingAll(LocalDate.now(), types, types.size(), pageable);
 
         if(businesses==null || businesses.isEmpty()){
             throw new BadRequestException(NOT_FOUND_BUSINESS_TYPE);
@@ -103,6 +100,7 @@ public class BusinessService {
                 .collect(Collectors.toList());
     }
     /*calendar+filter기능*/
+    @Cacheable("business")
     public List<BusinessResponseDTO> findBusinessByMonthAndFilter(YearMonth date, List<Integer> idxList){
         LocalDate startDate = date.atDay(1);
         LocalDate endDate = date.atEndOfMonth();
@@ -145,7 +143,7 @@ public class BusinessService {
     /*sortingByDeadline+filter기능*/
     public List<BusinessResponseDTO> findBusinessByDDayGreaterThanZero(List<Integer> idxList, Pageable pageable){
         if(idxList==null){
-            Page<Business> businesses = businessRepository.findByDDayGreaterThanZero(pageable);
+            Page<Business> businesses = businessRepository.findByDDayGreaterThanZero(LocalDate.now(), pageable);
             if(businesses==null || businesses.isEmpty()){
                 throw new BadRequestException(NOT_FOUND_BUSINESS);
             }
