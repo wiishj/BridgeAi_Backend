@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BusinessCustomRepository {
-    Page<Business> findAll(Pageable pageable);
-
-    Optional<Business> findById(Long id);
 
     List<Business> findByDeadlineBetween(LocalDate startDate, LocalDate endDate);
 

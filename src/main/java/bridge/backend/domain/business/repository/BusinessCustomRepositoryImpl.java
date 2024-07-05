@@ -21,29 +21,6 @@ import java.util.Optional;
 public class BusinessCustomRepositoryImpl implements BusinessCustomRepository {
     private JPAQueryFactory queryFactory;
 
-    @Override
-    public Page<Business> findAll(Pageable pageable) {
-        QBusiness business = QBusiness.business;
-
-        List<Business> businesses = queryFactory.selectFrom(business)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(business.id.desc())
-                .fetch();
-
-        return PageableExecutionUtils.getPage(businesses, pageable, () -> queryFactory.selectFrom(business).fetch().size());
-    }
-
-    @Override
-    public Optional<Business> findById(Long id) {
-        QBusiness business = QBusiness.business;
-
-        Business result = queryFactory.selectFrom(business)
-                .where(business.id.eq(id))
-                .fetchOne();
-
-        return Optional.ofNullable(result);
-    }
 
     @Override
     public List<Business> findByDeadlineBetween(LocalDate startDate, LocalDate endDate) {

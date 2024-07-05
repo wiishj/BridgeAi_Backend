@@ -15,5 +15,8 @@ import java.util.Optional;
 
 @Repository
 public interface BusinessRepository extends JpaRepository<Business, Long>, BusinessCustomRepository {
+    Page<Business> findAll(Pageable pageable);
+
+    Optional<Business> findById(Long id);
 
 }
