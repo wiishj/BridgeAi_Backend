@@ -1,11 +1,7 @@
-package bridge.backend.global;
+package bridge.backend.global.controller;
 
-import bridge.backend.domain.payment.entity.dto.OrderRequestDTO;
-import bridge.backend.domain.payment.entity.dto.OrderResponseDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
