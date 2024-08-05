@@ -1,5 +1,6 @@
 package bridge.backend.domain.user.controller;
 
+import bridge.backend.domain.user.entity.dto.LoginRequestDTO;
 import bridge.backend.domain.user.entity.dto.TokenDTO;
 import bridge.backend.domain.user.service.MemberService;
 import bridge.backend.global.exception.BadRequestException;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import static bridge.backend.global.exception.ExceptionCode.IS_NOT_REFRESHTOKEN;
 
@@ -18,11 +20,11 @@ import static bridge.backend.global.exception.ExceptionCode.IS_NOT_REFRESHTOKEN;
 public class AuthController {
     private final MemberService memberService;
 
-//    @PostMapping("/join")
-//    public ResponseEntity<?> join(@RequestBody LoginRequestDTO loginRequestDTO){
-//        memberService.join(loginRequestDTO);
-//        return ResponseEntity.ok("회원가입성공");
-//    }
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody LoginRequestDTO loginRequestDTO){
+       memberService.join(loginRequestDTO);
+       return ResponseEntity.ok("회원가입성공");
+   }
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = null;
