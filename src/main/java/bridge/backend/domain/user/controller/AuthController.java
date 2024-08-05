@@ -20,11 +20,11 @@ import static bridge.backend.global.exception.ExceptionCode.IS_NOT_REFRESHTOKEN;
 public class AuthController {
     private final MemberService memberService;
 
-    //@PostMapping("/join")
-    //public ResponseEntity<?> join(@RequestBody LoginRequestDTO loginRequestDTO){
-       //memberService.join(loginRequestDTO);
-     //  return ResponseEntity.ok("회원가입성공");
-   //}
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody LoginRequestDTO loginRequestDTO){
+       memberService.join(loginRequestDTO);
+       return ResponseEntity.ok("회원가입성공");
+    }
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = null;

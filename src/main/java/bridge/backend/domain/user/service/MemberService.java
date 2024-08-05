@@ -22,7 +22,7 @@ public class MemberService {
     public void join(LoginRequestDTO requestDTO){
         Member member = Member.builder()
                 .username(requestDTO.getUsername())
-                .password(requestDTO.getPassword())
+                .password(bCryptPasswordEncoder.encode(requestDTO.getPassword()))
                 .role(Role.ROLE_ADMIN)
                 .build();
         memberRepository.save(member);
