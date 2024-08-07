@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     private String phoneNumber;
 
     @OneToMany(mappedBy="host")
-    private List<Item> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
 
     //==연관관계 메서드==//
     public void addPlans(Item item){

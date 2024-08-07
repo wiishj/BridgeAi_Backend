@@ -72,8 +72,8 @@ public class ItemService {
                 .isSent(false)
                 .order(null)
                 .build();
-        user.addPlans(item);
         itemRepository.save(item);
+        user.addPlans(item);
         return ItemResponseDTO.from(item);
     }
 

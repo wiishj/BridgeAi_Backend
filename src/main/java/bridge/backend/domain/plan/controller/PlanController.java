@@ -1,6 +1,7 @@
 package bridge.backend.domain.plan.controller;
 
 import bridge.backend.domain.plan.entity.Item;
+import bridge.backend.domain.plan.entity.User;
 import bridge.backend.domain.plan.entity.dto.*;
 import bridge.backend.domain.plan.repository.ItemRepository;
 import bridge.backend.domain.plan.service.UserService;
