@@ -10,6 +10,8 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000", "https://www.bridgeai.co.kr", "http://www.bridgeai.co.kr") // 허용할 프론트엔드 도메인
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메서드
-                .allowedHeaders("*"); // 허용할 요청 헤더
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .exposedHeaders("Authorization");
     }
 }
