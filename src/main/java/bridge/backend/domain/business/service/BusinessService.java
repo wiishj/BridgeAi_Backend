@@ -100,7 +100,6 @@ public class BusinessService {
                 .collect(Collectors.toList());
     }
     /*calendar+filter기능*/
-    @Cacheable("business")
     public List<BusinessResponseDTO> findBusinessByMonthAndFilter(YearMonth date, List<Integer> idxList){
         LocalDate startDate = date.atDay(1);
         LocalDate endDate = date.atEndOfMonth();
