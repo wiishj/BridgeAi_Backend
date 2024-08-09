@@ -42,7 +42,6 @@ public class BusinessCustomRepositoryImpl implements BusinessCustomRepository {
                 .where(business.deadline.between(startDate, endDate)
                         .and(typesCondition))
                 .groupBy(business)
-                .having(business.types.size().eq((int)typeCount))
                 .fetch();
     }
 
@@ -57,7 +56,6 @@ public class BusinessCustomRepositoryImpl implements BusinessCustomRepository {
                 .where(business.deadline.goe(today)
                         .and(typesCondition))
                 .groupBy(business)
-                .having(business.types.size().eq((int)typeCount))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -67,7 +65,6 @@ public class BusinessCustomRepositoryImpl implements BusinessCustomRepository {
                 .where(business.deadline.goe(today)
                         .and(typesCondition))
                 .groupBy(business)
-                .having(business.types.size().eq((int)typeCount))
                 .fetchCount();
 
         return new PageImpl<>(businesses, pageable, total);
