@@ -69,7 +69,7 @@ public class BusinessController {
     }
     @GetMapping("/byFilterAndSortingDeadline")
     public ResponseEntity<?> getBusinessesByDeadline(@RequestParam(name="idx", required = false) List<Integer> idxList, @RequestParam(name="page", required=false, defaultValue = "0")int page){
-        PageRequest pageable = PageRequest.of(page, 10, Sort.by("dDay").ascending());
+        PageRequest pageable = PageRequest.of(page, 10);
         List<BusinessResponseDTO> res = businessService.findBusinessByDDayGreaterThanZero(idxList, pageable);
         return ResponseEntity.ok(Map.of("size", res.size(),"data",res));
 

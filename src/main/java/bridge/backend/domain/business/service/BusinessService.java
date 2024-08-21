@@ -142,7 +142,7 @@ public class BusinessService {
     /*sortingByDeadline+filter기능*/
     public List<BusinessResponseDTO> findBusinessByDDayGreaterThanZero(List<Integer> idxList, Pageable pageable){
         if(idxList==null){
-            Page<Business> businesses = businessRepository.findByDDayGreaterThanZero(LocalDate.now(), pageable);
+            Page<Business> businesses = businessRepository.findByDeadlineAfterOrderByDeadlineAsc(LocalDate.now(), pageable);
             if(businesses==null || businesses.isEmpty()){
                 throw new BadRequestException(NOT_FOUND_BUSINESS);
             }

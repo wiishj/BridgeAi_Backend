@@ -18,5 +18,6 @@ public interface BusinessRepository extends JpaRepository<Business, Long>, Busin
     Page<Business> findAll(Pageable pageable);
 
     Optional<Business> findById(Long id);
+    Page<Business> findByDeadlineAfterOrderByDeadlineAsc(LocalDate today, Pageable pageable);
 
 }
