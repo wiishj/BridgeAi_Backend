@@ -1,5 +1,6 @@
 package bridge.backend.domain.business.entity.dto;
 
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public class BusinessRequestDTO {
     private List<String> types;
     private LocalDate deadline;
     private String agent;
+    @Size(max=1000)
     private String link;
 
     public Boolean isNull(){

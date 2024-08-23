@@ -27,5 +27,6 @@ public class Business extends BaseEntity {
     private List<Type> types;
     private LocalDate deadline;
     private String agent;
+    @Column(length=1000)
     private String link;
 }
